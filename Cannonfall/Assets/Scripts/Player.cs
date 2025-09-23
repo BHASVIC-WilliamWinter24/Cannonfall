@@ -41,19 +41,25 @@ public class Player : MonoBehaviour
     private void Move() // horizontal movement
     {
         float movementX = Input.GetAxis("Horizontal");
+        if (movementX < 0)
+            Debug.Log("Left");
+        if (movementX > 0)
+            Debug.Log("Right");
         transform.position += new Vector3(movementX, 0f) * Time.deltaTime * moveForce;
     }
 
     private void Jump()
     {
+        if (Input.GetButtonDown("Jump"))
+            Debug.Log("Jump");
         if (Input.GetButtonDown("Jump") && doubleJump && !isGrounded) // if not on ground but has a double jump charge
-        {
-            body.linearVelocity = new Vector3(body.linearVelocityX, 0f, 0f); // continues with x velocity, resets y to 0
-            doubleJump = false;
-            body.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-            GameObject cannonball = Instantiate(cannonballObject); // create a cannonball
-            cannonball.transform.position = body.transform.position; // sets it position to that of the player
-        }
+            {
+                body.linearVelocity = new Vector3(body.linearVelocityX, 0f, 0f); // continues with x velocity, resets y to 0
+                doubleJump = false;
+                body.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                GameObject cannonball = Instantiate(cannonballObject); // create a cannonball
+                cannonball.transform.position = body.transform.position; // sets it position to that of the player
+            }
         if (Input.GetButtonDown("Jump") && isGrounded) // if jump button and on ground
         {
             isGrounded = false;
