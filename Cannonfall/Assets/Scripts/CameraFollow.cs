@@ -13,7 +13,7 @@ public class CameraFollow : MonoBehaviour
     void LateUpdate() // executes before update every frame
     {
         tempPos = player.position;
-        if (tempPos.y < 0)
+        if (tempPos.y < 0 && !(-10 > tempPos.x && tempPos.x > -14) )
             tempPos.y = 0;
         tempPos.z = -10;
         transform.position = tempPos;

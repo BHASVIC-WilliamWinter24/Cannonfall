@@ -16,7 +16,7 @@ public class Arc : MonoBehaviour
         animator = GetComponent<Animator>();
 
     }
-    void Update()
+    void Start()
     {
         StartCoroutine(zapCycle());
     }
@@ -29,12 +29,12 @@ public class Arc : MonoBehaviour
             arcOn = !arcOn; // swap the current state of the arc
             if (arcOn) // if electric is on
             {
-                animator.SetBool("Arc", true); // set parameter in animator to true
+                animator.SetBool("arcOn", true); // set parameter in animator to true
                 arcCollider.enabled = true; // turns collider on
             }
             else
             {
-                animator.SetBool("Arc", false); // set parameter in animator to false
+                animator.SetBool("arcOn", false); // set parameter in animator to false
                 arcCollider.enabled = false; // turns collider off
             }
         }
