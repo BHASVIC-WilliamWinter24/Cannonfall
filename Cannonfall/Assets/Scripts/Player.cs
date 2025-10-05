@@ -6,20 +6,17 @@ using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] // show and edit in Inspector
-    private float moveForce;
-    [SerializeField]
-    private float jumpForce;
-    private bool isGrounded = true;
-    private bool doubleJump;
-    private bool isAlive = true;
-    private Rigidbody2D body;
-    private string GROUND_TAG = "Ground";
-    private string HAZARD_TAG = "Hazard";
-    [SerializeField]
-    private GameObject cannonballObject;
-    [SerializeField]
-    private GameObject blackScreen;
+    [SerializeField] private float moveForce; // horizontal speed
+    [SerializeField] private float jumpForce; // force of jump
+    private bool isGrounded = true; // if on ground
+    private bool doubleJump; // if has double jumped
+    private bool isAlive = true; // if is alive
+    private Rigidbody2D body; // reference for Rigidbody
+    private string GROUND_TAG = "Ground"; // Ground Tag
+    private string HAZARD_TAG = "Hazard"; // Hazard Tag
+    [SerializeField] private GameObject cannonballObject; // reference to Cannonball 
+    [SerializeField] private GameObject blackScreen; // reference to BlackScreen
+    private Vector3 respawnPosition = new Vector3(0, 0, 0); // respawn position (accessed by Checkpoint)
 
     void Awake()
     {
@@ -83,10 +80,19 @@ public class Player : MonoBehaviour
     {
         StartCoroutine(blackScreen.GetComponent<FadeToBlack>().FadeBlackScreen(true));
         yield return new WaitForSeconds(1.5f);
-        transform.position = new Vector3(0, 0, 0);
+        transform.position = respawnPosition;
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(blackScreen.GetComponent<FadeToBlack>().FadeBlackScreen(false));
         isAlive = true;
     }
-    
+
+    public void setRespawnPosition(Vector3 newPosition)
+    {
+        respawnPosition = newPosition;
+    }
+
+    public Vector3 getRespawnPosition()
+    {
+        return respawnPosition;
+    }
 }

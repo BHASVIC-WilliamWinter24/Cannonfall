@@ -3,8 +3,7 @@ using System.Collections;
 
 public class Arc : MonoBehaviour
 {
-    [SerializeField]
-    float zapCycleTime;
+    [SerializeField] float zapCycleTime;
     bool arcOn = true;
     private BoxCollider2D arcCollider;
     private Animator animator;
