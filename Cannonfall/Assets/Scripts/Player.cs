@@ -1,8 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Packages.Rider.Editor.UnitTesting;
-using Unity.VisualScripting;
+using UnityEditor.Build;
 
 public class Player : MonoBehaviour
 {
@@ -12,8 +11,9 @@ public class Player : MonoBehaviour
     private bool doubleJump; // if has double jumped
     private bool isAlive = true; // if is alive
     private Rigidbody2D body; // reference for Rigidbody
-    private string GROUND_TAG = "Ground"; // Ground Tag
-    private string HAZARD_TAG = "Hazard"; // Hazard Tag
+    private string GROUND_TAG = "Ground"; // Ground tag
+    private string HAZARD_TAG = "Hazard"; // Hazard tag
+    private string ENEMY_TAG = "Enemy"; // Enemy tag
     [SerializeField] private GameObject cannonballObject; // reference to Cannonball 
     [SerializeField] private GameObject blackScreen; // reference to BlackScreen
     private Vector3 respawnPosition = new Vector3(0, 0, 0); // respawn position (accessed by Checkpoint)
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
             isGrounded = true;
             doubleJump = true;
         }
-        if (collision.gameObject.CompareTag(HAZARD_TAG) && isAlive)
+        if (collision.gameObject.CompareTag(HAZARD_TAG) && isAlive || collision.gameObject.CompareTag(ENEMY_TAG) && isAlive)
         {
             isAlive = false;
             StartCoroutine(playerDeath());
@@ -83,8 +83,12 @@ public class Player : MonoBehaviour
         transform.position = respawnPosition;
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(blackScreen.GetComponent<FadeToBlack>().FadeBlackScreen(false));
+        onDeath?.Invoke();
         isAlive = true;
     }
+
+    public delegate void OnDeath();
+    public static event OnDeath onDeath;
 
     public void setRespawnPosition(Vector3 newPosition)
     {

@@ -8,6 +8,7 @@ TagManager:
   - Cannonball
   - Hazard
   - Checkpoint
+  - Enemy
   layers:
   - Default
   - TransparentFX
