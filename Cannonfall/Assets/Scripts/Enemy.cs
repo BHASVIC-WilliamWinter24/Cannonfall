@@ -89,13 +89,11 @@ public class Enemy : MonoBehaviour
             {
                 moveCapLeft = transform.position.x + 0.5f; // set cap to here (little offset so doesn't hang so much)
                 body.linearVelocityX = 0; // stop moving left
-                Debug.Log("cap left");
             }
             else if (moveSpeed > 0 && !ledgeBelowRight) // if moving right & no ledge on right
             {
                 moveCapRight = transform.position.x - 0.5f; // set cap to here (little offset so doesn't hang so much)
                 body.linearVelocityX = 0; // stop moving right
-                Debug.Log("cap right");
             }
         }
     }
