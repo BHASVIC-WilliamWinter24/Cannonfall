@@ -88,5 +88,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4a872f6a75884840b79382bf36ec9a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blackScreen: {fileID: 1798073295097729088}
+  objectToFade: {fileID: 1798073295097729088}
   fadeSpeed: 5

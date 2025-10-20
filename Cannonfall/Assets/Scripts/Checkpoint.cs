@@ -15,7 +15,7 @@ public class Checkpoint : MonoBehaviour
     void Awake()
     {
         checkpointPosition = transform.position;
-        animator = GetComponent<Animator>(); 
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -32,12 +32,7 @@ public class Checkpoint : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F)) // if press E or F
             {
-                StopCoroutine(popup(true)); // stop any coroutine showing the popup
-                StartCoroutine(popup(false)); // start hiding the popup
-                popup(false); // remove popUp
-                GameObject.FindWithTag("Player").GetComponent<Player>().setRespawnPosition(checkpointPosition); // set position to new position
-                activeCheckpoint = true;
-                animator.SetBool("activeCheckpoint", true);
+                activateCheckpoint();
             }
         }
         else
@@ -79,9 +74,24 @@ public class Checkpoint : MonoBehaviour
                 if (interactPopUp.transform.position.x < 590f)
                 {
                     interactPopUp.transform.position = new Vector3(590f, interactPopUp.transform.position.y, 0f);
-                    yield return null; 
+                    yield return null;
                 }
             }
         }
+    }
+
+    public void activateCheckpoint()
+    {
+        StopCoroutine(popup(true)); // stop any coroutine showing the popup
+        StartCoroutine(popup(false)); // start hiding the popup
+        GameObject.FindWithTag("Player").GetComponent<Player>().setActiveCheckpoint(gameObject); // set active checkpoint to this object
+        activeCheckpoint = true;
+        animator.SetBool("activeCheckpoint", true);
+        SaveSystem.Save(); // save!
+    }
+
+    public Vector3 getPosition()
+    {
+        return checkpointPosition;
     }
 }
