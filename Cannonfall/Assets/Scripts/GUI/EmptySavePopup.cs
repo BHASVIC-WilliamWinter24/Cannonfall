@@ -1,8 +1,7 @@
 using UnityEngine;
 
 public class EmptySavePopup : MonoBehaviour
-{
-    public int saveSlot = 0;    
+{ 
     void Start()
     {
         FadePopup(false);

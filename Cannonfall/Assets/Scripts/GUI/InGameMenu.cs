@@ -8,17 +8,21 @@ public class InGameMenu : MonoBehaviour
     private int selectedButton = 0; // starts on continue
     private int buffer = 0;
     private bool active = false;
+    public bool subPopup = false;
+    private int selectBuffer = 2;
 
     void Update()
     {
         if (active)
         {
+            selectBuffer--;
             Select();
             Navigate();
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && !subPopup && selectBuffer <= 0)
             {
                 active = false;
                 FadePopup(false);
+                Time.timeScale = 1;
             }
         }
         else
@@ -27,27 +31,34 @@ public class InGameMenu : MonoBehaviour
             {
                 active = true;
                 FadePopup(true);
+                Time.timeScale = 0;
             }
         }
+        if (subPopup)
+        {
+            selectBuffer = 2;
+        }
     }
-
-    void Select()
+    
+    private void Select()
     {
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F))
         {
-            if (selectedButton == 0) // continue
+            if (selectedButton == 0 && selectBuffer <= 0) // continue
             {
                 active = false;
                 FadePopup(false);
+                Time.timeScale = 1;
             }
-            else if (selectedButton == 1) // quit
+            else if (selectedButton == 1 && selectBuffer <= 0) // quit
             {
-                QuitPopup();
+                subPopup = true;
+                GameObject.Find("Quit Popup").GetComponent<QuitPopup>().Activate();
             }
         }
     }
 
-    void Navigate()
+    private void Navigate()
     {
         float navigate = Input.GetAxisRaw("Vertical");
         if (navigate > 0 && buffer == 0)
@@ -90,7 +101,7 @@ public class InGameMenu : MonoBehaviour
         }
     }
 
-    public void FadePopup(bool fadeBool)
+    private void FadePopup(bool fadeBool)
     {
         foreach (Transform child in transform)
         {
@@ -103,10 +114,5 @@ public class InGameMenu : MonoBehaviour
                 child.gameObject.GetComponent<FadeText>().fadeIn = fadeBool;
             }
         }
-    }
-
-    void QuitPopup()
-    {
-        
     }
 }

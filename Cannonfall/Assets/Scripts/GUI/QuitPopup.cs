@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class QuitPopup : MonoBehaviour
 {
@@ -18,26 +20,29 @@ public class QuitPopup : MonoBehaviour
             {
                 active = false;
                 FadePopup(false);
+                GameObject.Find("In-Game Menu").GetComponent<InGameMenu>().subPopup = false;
             }
         }
     }
 
-    void Select()
+    private void Select()
     {
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F))
         {
             if (selectedButton == 0) // quit
             {
-                
+                SceneManager.LoadScene("Main Menu");
             }
             else if (selectedButton == 1) // cancel
             {
-                
+                active = false; // deactivate
+                FadePopup(false); // hide
+                GameObject.Find("In-Game Menu").GetComponent<InGameMenu>().subPopup = false; // active other popup
             }
         }
     }
 
-    void Navigate()
+    private void Navigate()
     {
         float navigate = Input.GetAxisRaw("Vertical");
         if (navigate > 0 && buffer == 0)
@@ -66,11 +71,14 @@ public class QuitPopup : MonoBehaviour
         }
         if (selectedButton == 0) // overwrite 
         {
-            
+            quit.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Bold;
+            cancel.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Normal;
         }
         else if (selectedButton == 1) // cancel
         {
             
+            quit.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Normal;
+            cancel.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Bold;
         }
         else
         {
@@ -78,7 +86,7 @@ public class QuitPopup : MonoBehaviour
         }
     }
 
-    public void FadePopup(bool fadeBool)
+    private void FadePopup(bool fadeBool)
     {
         foreach (Transform child in transform)
         {
@@ -91,5 +99,11 @@ public class QuitPopup : MonoBehaviour
                 child.gameObject.GetComponent<FadeText>().fadeIn = fadeBool;
             }
         }
+    }
+
+    public void Activate()
+    {
+        active = true;
+        FadePopup(true);
     }
 }

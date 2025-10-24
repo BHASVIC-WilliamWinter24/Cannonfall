@@ -57,8 +57,7 @@ public class LoadGameMenu : MonoBehaviour
                     time = "N/A";
                 GameObject.Find("Save Slot " + n).GetComponent<TextMeshProUGUI>().text = "SLOT " + n + " - "; // add level
                 GameObject.Find("Save Details " + n).GetComponent<TextMeshProUGUI>().text = "Saved: " + time;
-            }
-            
+            }  
         }
     }
 
@@ -80,7 +79,7 @@ public class LoadGameMenu : MonoBehaviour
         return emptySlot;
     }
 
-    void Select()
+    private void Select()
     {
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F))
         {
@@ -150,7 +149,7 @@ public class LoadGameMenu : MonoBehaviour
         emptyPopup = true;
     }
 
-    void Navigate()
+    private void Navigate()
     {
         float navigate = Input.GetAxisRaw("Horizontal");
         if (navigate < 0 && buffer == 0)
@@ -208,5 +207,4 @@ public class LoadGameMenu : MonoBehaviour
             Debug.Log("selectedButton out of range"); // show that some error has occurred 
         }
     }
-
 }

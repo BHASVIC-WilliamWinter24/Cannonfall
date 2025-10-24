@@ -20,35 +20,38 @@ public class Checkpoint : MonoBehaviour
 
     void Update()
     {
-        playerPosition = GameObject.FindWithTag("Player").transform.position; // gets the position of the player
-        float distance = Vector3.Distance(checkpointPosition, playerPosition); // distance between the two
-        if (distance < activationDistance)
+        if (Time.timeScale != 0)
         {
-            enteredRange = true;
-            if (!activeCheckpoint) // if not active checkpoint
+            playerPosition = GameObject.FindWithTag("Player").transform.position; // gets the position of the player
+            float distance = Vector3.Distance(checkpointPosition, playerPosition); // distance between the two
+            if (distance < activationDistance)
             {
-                StopCoroutine(popup(false)); // stop any coroutine hiding the popup
-                StartCoroutine(popup(true)); // start showing the popup
+                enteredRange = true;
+                if (!activeCheckpoint) // if not active checkpoint
+                {
+                    StopCoroutine(popup(false)); // stop any coroutine hiding the popup
+                    StartCoroutine(popup(true)); // start showing the popup
+                }
+                if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F)) // if press E or F
+                {
+                    activateCheckpoint();
+                }
             }
-            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F)) // if press E or F
+            else
             {
-                activateCheckpoint();
+                if (enteredRange) // if has been within range and then exited
+                {
+                    enteredRange = false; // reset
+                    StopCoroutine(popup(true)); // stop any coroutine showing the popup
+                    StartCoroutine(popup(false)); // start hiding the popup
+                }
             }
-        }
-        else
-        {
-            if (enteredRange) // if has been within range and then exited
+            Vector3 currentCheckpoint = GameObject.FindWithTag("Player").GetComponent<Player>().getRespawnPosition(); // get current respawn position
+            if (currentCheckpoint != checkpointPosition)
             {
-                enteredRange = false; // reset
-                StopCoroutine(popup(true)); // stop any coroutine showing the popup
-                StartCoroutine(popup(false)); // start hiding the popup
+                activeCheckpoint = false;
+                animator.SetBool("activeCheckpoint", false);
             }
-        }
-        Vector3 currentCheckpoint = GameObject.FindWithTag("Player").GetComponent<Player>().getRespawnPosition(); // get current respawn position
-        if (currentCheckpoint != checkpointPosition)
-        {
-            activeCheckpoint = false;
-            animator.SetBool("activeCheckpoint", false);
         }
     }
 

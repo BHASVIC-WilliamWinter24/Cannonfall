@@ -41,8 +41,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Move();
-        Jump();
+        if (Time.timeScale != 0) // as long as game is not paused
+        {
+            Move();
+            Jump();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

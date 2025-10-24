@@ -22,7 +22,10 @@ public class FadeUI : MonoBehaviour
             desiredFade = 1; // fully opaque
         else
             desiredFade = 0; // fully transparent
-        objectColor.a = Mathf.MoveTowards(objectColor.a, desiredFade, fadeSpeed * Time.deltaTime); // fade
+        if (objectToFade.CompareTag("DoNotPause"))
+            objectColor.a = Mathf.MoveTowards(objectColor.a, desiredFade, fadeSpeed * Time.unscaledDeltaTime); // fade unaffected by time freeze
+        else
+            objectColor.a = Mathf.MoveTowards(objectColor.a, desiredFade, fadeSpeed * Time.deltaTime); // fade
         objectToFade.GetComponent<Image>().color = objectColor; // change
     }
 }
