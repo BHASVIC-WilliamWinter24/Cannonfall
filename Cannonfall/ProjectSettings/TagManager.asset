@@ -9,11 +9,13 @@ TagManager:
   - Hazard
   - Checkpoint
   - Enemy
+  - DoNotPause
+  - Limit
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Camera
   - Water
   - UI
   - 

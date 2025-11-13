@@ -39,7 +39,7 @@ public class InGameMenu : MonoBehaviour
             selectBuffer = 2;
         }
     }
-    
+
     private void Select()
     {
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F))

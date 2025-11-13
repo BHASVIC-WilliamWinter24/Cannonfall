@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.IO;
+using UnityEngine.Timeline;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private float moveForce; // horizontal speed
     [SerializeField] private float jumpForce; // force of jump
-    private bool isGrounded = true; // if on ground
+    private bool isGrounded = true; // if touching ground
+    public bool groundBelow; // if that ground is below
     private bool doubleJump; // if has double jumped
     private bool isAlive = true; // if is alive
     private Rigidbody2D body; // reference for Rigidbody
@@ -20,6 +23,8 @@ public class Player : MonoBehaviour
     private Vector3 respawnPosition = new Vector3(0, 0, 0); // respawn position (accessed by Checkpoint)
     private GameObject activeCheckpoint; // holds active checkpoint reference
     private bool findCheckpoint = false;
+    private float wallSliding = 0f;
+    
 
     void Awake()
     {
@@ -45,21 +50,38 @@ public class Player : MonoBehaviour
         {
             Move();
             Jump();
+            if (!isGrounded)
+                body.linearVelocityX *= 0.9f; // slows jumps through air slightly
+            if (wallSliding != 0 && wallSliding != transform.position.x) // if was frictionless but has now moved from the wall 
+            {
+                wallSliding = 0;
+                GetComponent<CapsuleCollider2D>().sharedMaterial = null;
+            }
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(GROUND_TAG))
-        {
-            isGrounded = true;
-            doubleJump = true;
-        }
         if (collision.gameObject.CompareTag(HAZARD_TAG) && isAlive || collision.gameObject.CompareTag(ENEMY_TAG) && isAlive)
         {
             isAlive = false;
             StartCoroutine(playerDeath());
         }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(GROUND_TAG) && groundBelow)
+        {
+            isGrounded = true;
+            doubleJump = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(GROUND_TAG))
+            isGrounded = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -79,7 +101,25 @@ public class Player : MonoBehaviour
     private void Move() // horizontal movement
     {
         float movementX = Input.GetAxis("Horizontal");
-        transform.position += new Vector3(movementX, 0f) * Time.deltaTime * moveForce;
+        body.linearVelocity = new Vector2(movementX * moveForce, body.linearVelocityY);
+        // forcibly slide down walls
+        if (body.linearVelocityX != 0 && !groundBelow && body.linearVelocityY == 0) 
+        {
+            PhysicsMaterial2D frictionless = new PhysicsMaterial2D();
+            frictionless.friction = 0;
+            GetComponent<CapsuleCollider2D>().sharedMaterial = frictionless;
+            wallSliding = transform.position.x;
+        }
+
+
+        /*
+        body.AddForce(new Vector2(movementX * moveForce, 0f), ForceMode2D.Impulse);
+        if (body.linearVelocityX > 10)
+            body.linearVelocityX = 10;
+        else if (body.linearVelocityX < -10)
+            body.linearVelocityX = -10;
+        */
+        //transform.position += new Vector3(movementX, 0f) * Time.deltaTime * moveForce;
     }
 
     private void Jump()
@@ -88,7 +128,7 @@ public class Player : MonoBehaviour
         {
             body.linearVelocity = new Vector3(body.linearVelocityX, 0f, 0f); // continues with x velocity, resets y to 0
             doubleJump = false;
-            body.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            body.AddForce(new Vector2(0, jumpForce+2), ForceMode2D.Impulse);
             GameObject cannonball = Instantiate(cannonballObject); // create a cannonball
             cannonball.transform.position = body.transform.position; // sets it position to that of the player
         }

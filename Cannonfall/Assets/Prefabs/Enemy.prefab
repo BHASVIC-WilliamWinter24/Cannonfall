@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   moveSpeed: 2
-  chaseDistance: 8
+  chaseDistance: 10
   spawnpoint: {x: 0, y: 0, z: 0}
   jumping: 0
   ledgeBelowLeft: 0

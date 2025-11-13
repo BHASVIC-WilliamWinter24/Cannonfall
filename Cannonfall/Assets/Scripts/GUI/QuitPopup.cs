@@ -8,15 +8,17 @@ public class QuitPopup : MonoBehaviour
     [SerializeField] GameObject cancel;
     private int selectedButton = 1; // starts on cancel
     private int buffer = 0;
+    private int selectBuffer;
     private bool active = false;
 
     void Update()
     {
         if (active)
         {
+            selectBuffer--;
             Select();
             Navigate();
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && selectBuffer <= 0)
             {
                 active = false;
                 FadePopup(false);
@@ -29,11 +31,12 @@ public class QuitPopup : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F))
         {
-            if (selectedButton == 0) // quit
+            if (selectedButton == 0 && selectBuffer <= 0) // quit
             {
+                Time.timeScale = 1; // unpause
                 SceneManager.LoadScene("Main Menu");
             }
-            else if (selectedButton == 1) // cancel
+            else if (selectedButton == 1 && selectBuffer <= 0) // cancel
             {
                 active = false; // deactivate
                 FadePopup(false); // hide
@@ -105,5 +108,6 @@ public class QuitPopup : MonoBehaviour
     {
         active = true;
         FadePopup(true);
+        selectBuffer = 2;
     }
 }
