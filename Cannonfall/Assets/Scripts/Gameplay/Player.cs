@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale != 0) // as long as game is not paused
+        if (Time.timeScale != 0 || !isAlive) // as long as game is not paused and is alive
         {
             Move();
             Jump();
