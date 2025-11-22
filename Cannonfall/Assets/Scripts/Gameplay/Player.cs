@@ -1,10 +1,8 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.IO;
-using UnityEngine.Timeline;
-using UnityEngine.InputSystem;
+using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
@@ -22,9 +20,10 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject blackScreen; // reference to BlackScreen
     private Vector3 respawnPosition = new Vector3(0, 0, 0); // respawn position (accessed by Checkpoint)
     private GameObject activeCheckpoint; // holds active checkpoint reference
-    private bool findCheckpoint = false;
-    private float wallSliding = 0f;
-    
+    private bool findCheckpoint = false; // if needs to get checkpoint after saving
+    private float wallSliding = 0f; // x-coord when wallsliding
+    [SerializeField] private int[] upgradeList = {0, 0}; // holds all upgrades (0 = inactive, 1 = active)
+    [SerializeField] private GameObject upgradeMenu; // holds reference to upgrade menu333333333
 
     void Awake()
     {
@@ -46,7 +45,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale != 0 || !isAlive) // as long as game is not paused and is alive
+        if (Time.timeScale != 0) // as long as game is not paused
         {
             Move();
             Jump();
@@ -96,12 +95,20 @@ public class Player : MonoBehaviour
             activeCheckpoint.GetComponent<Checkpoint>().activateCheckpoint();
             findCheckpoint = false; // no longer need to find a checkpoint
         }
+        if (collision.CompareTag("Upgrade"))
+        {
+            int upgradeIndex = collision.GetComponent<UpgradeToken>().getUpgrade(); // get index 
+            upgradeList[upgradeIndex] = 1; // set index of list to 'collected'
+            upgradeMenu.GetComponent<UpgradeMenu>().Activate(upgradeIndex); // activate menu
+            Destroy(collision.gameObject); // destroy upgrade token
+        }
     }
 
     private void Move() // horizontal movement
     {
         float movementX = Input.GetAxis("Horizontal");
-        body.linearVelocity = new Vector2(movementX * moveForce, body.linearVelocityY);
+        float move = moveForce + (upgradeList[0] * 0.1f * moveForce); // change moveForce depending on upgrade
+        body.linearVelocity = new Vector2(movementX * move, body.linearVelocityY);
         // forcibly slide down walls
         if (body.linearVelocityX != 0 && !groundBelow && body.linearVelocityY == 0) 
         {
@@ -124,24 +131,26 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
+        float jump = jumpForce + (upgradeList[1] * 0.05f * jumpForce);  // change jumpforce depending on upgrades
         if (Input.GetButtonDown("Jump") && doubleJump && !isGrounded) // if not on ground but has a double jump charge
         {
             body.linearVelocity = new Vector3(body.linearVelocityX, 0f, 0f); // continues with x velocity, resets y to 0
             doubleJump = false;
-            body.AddForce(new Vector2(0, jumpForce+2), ForceMode2D.Impulse);
+            body.AddForce(new Vector2(0, jump+2), ForceMode2D.Impulse);
             GameObject cannonball = Instantiate(cannonballObject); // create a cannonball
             cannonball.transform.position = body.transform.position; // sets it position to that of the player
         }
         if (Input.GetButtonDown("Jump") && isGrounded) // if jump button and on ground
         {
             isGrounded = false;
-            body.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            body.AddForce(new Vector2(0, jump), ForceMode2D.Impulse);
         }
 
     }
 
     private IEnumerator playerDeath()
     {
+        body.linearVelocity = new Vector2(0, 0); // stop velocity
         blackScreen.GetComponent<FadeUI>().fadeIn = true;
         yield return new WaitForSeconds(1.5f);
         transform.position = respawnPosition;

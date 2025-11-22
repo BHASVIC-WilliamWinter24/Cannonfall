@@ -108,4 +108,10 @@ public class Enemy : MonoBehaviour
     {
         Destroy(gameObject); // destroy self
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Hazard"))
+            Destroy(this);
+    }
 }

@@ -37,6 +37,9 @@ public class CameraFollow : MonoBehaviour
                 tempPos.y = (-0.5f * tempPos.x) + 6; // buttom line y = -0.5x + 6
             if (tempPos.x >= -26 && tempPos.x < 21 && tempPos.y > 16 && tempPos.y < 19)
                 tempPos.y = 19; // bottom limit 19
+            //at bottom 
+            if (tempPos.y < -35 && tempPos.x < -22 && tempPos.x > -106) 
+                tempPos.y = -35;
         }
         #endregion
         /*

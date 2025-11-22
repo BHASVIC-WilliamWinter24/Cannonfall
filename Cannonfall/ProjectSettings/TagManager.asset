@@ -10,7 +10,7 @@ TagManager:
   - Checkpoint
   - Enemy
   - DoNotPause
-  - Limit
+  - Upgrade
   layers:
   - Default
   - TransparentFX
