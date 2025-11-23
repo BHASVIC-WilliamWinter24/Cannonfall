@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.IO;
-using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
@@ -11,6 +10,7 @@ public class Player : MonoBehaviour
     private bool isGrounded = true; // if touching ground
     public bool groundBelow; // if that ground is below
     private bool doubleJump; // if has double jumped
+    [SerializeField] private bool tripleJump = false; // if has triple jump
     private bool isAlive = true; // if is alive
     private Rigidbody2D body; // reference for Rigidbody
     private string GROUND_TAG = "Ground"; // Ground tag
@@ -22,8 +22,8 @@ public class Player : MonoBehaviour
     private GameObject activeCheckpoint; // holds active checkpoint reference
     private bool findCheckpoint = false; // if needs to get checkpoint after saving
     private float wallSliding = 0f; // x-coord when wallsliding
-    [SerializeField] private int[] upgradeList = {0, 0}; // holds all upgrades (0 = inactive, 1 = active)
-    [SerializeField] private GameObject upgradeMenu; // holds reference to upgrade menu333333333
+    [SerializeField] private int[] upgradeList = {0, 0, 0, 0, 0}; // holds all upgrades (0 = inactive, 1 = active)
+    [SerializeField] private GameObject upgradeMenu; // holds reference to upgrade menu
 
     void Awake()
     {
@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        upgradeList = new int[5]; // ensures that list has a length of 5
         if (!File.Exists(Application.persistentDataPath + "slot" + GameManager.instance.SaveSlot + ".save")) // if no save yet
         {
             SaveSystem.Save();
@@ -74,6 +75,8 @@ public class Player : MonoBehaviour
         {
             isGrounded = true;
             doubleJump = true;
+            if (upgradeList[2] == 1) // if triple jump upgrade active
+                tripleJump = true;
         }
     }
 
@@ -101,6 +104,8 @@ public class Player : MonoBehaviour
             upgradeList[upgradeIndex] = 1; // set index of list to 'collected'
             upgradeMenu.GetComponent<UpgradeMenu>().Activate(upgradeIndex); // activate menu
             Destroy(collision.gameObject); // destroy upgrade token
+            if (upgradeIndex == 3) // if explosive upgrade
+                cannonballObject.GetComponent<Cannonball>().upgradeActive = true; // set explosive cannonballs
         }
     }
 
@@ -117,8 +122,6 @@ public class Player : MonoBehaviour
             GetComponent<CapsuleCollider2D>().sharedMaterial = frictionless;
             wallSliding = transform.position.x;
         }
-
-
         /*
         body.AddForce(new Vector2(movementX * moveForce, 0f), ForceMode2D.Impulse);
         if (body.linearVelocityX > 10)
@@ -132,20 +135,39 @@ public class Player : MonoBehaviour
     private void Jump()
     {
         float jump = jumpForce + (upgradeList[1] * 0.05f * jumpForce);  // change jumpforce depending on upgrades
+        if (Input.GetButtonDown("Jump") && !doubleJump && !isGrounded && tripleJump) // if jump after double and has triple
+        {
+            body.linearVelocity = new Vector3(body.linearVelocityX, 0f, 0f); // continues with x velocity, resets y to 0
+            tripleJump = false;
+            body.AddForce(new Vector2(0, jump+2), ForceMode2D.Impulse);
+            GameObject cannonball1 = Instantiate(cannonballObject); // create a cannonball
+            cannonball1.transform.position = body.transform.position; // sets it position to that of the player
+            if(upgradeList[4] == 1)
+            {
+                GameObject cannonball2 = Instantiate(cannonballObject);
+                cannonball2.transform.position = body.transform.position + new Vector3(0.4f, 0, 0);
+                cannonball1.transform.position = body.transform.position - new Vector3(0.4f, 0, 0);
+            }
+        }
         if (Input.GetButtonDown("Jump") && doubleJump && !isGrounded) // if not on ground but has a double jump charge
         {
             body.linearVelocity = new Vector3(body.linearVelocityX, 0f, 0f); // continues with x velocity, resets y to 0
             doubleJump = false;
             body.AddForce(new Vector2(0, jump+2), ForceMode2D.Impulse);
-            GameObject cannonball = Instantiate(cannonballObject); // create a cannonball
-            cannonball.transform.position = body.transform.position; // sets it position to that of the player
+            GameObject cannonball3 = Instantiate(cannonballObject); // create a cannonball
+            cannonball3.transform.position = body.transform.position; // sets it position to that of the player
+            if (upgradeList[4] == 1)
+            {
+                GameObject cannonball4 = Instantiate(cannonballObject);
+                cannonball4.transform.position = body.transform.position + new Vector3(0.3f, 0, 0);
+                cannonball3.transform.position = body.transform.position - new Vector3(0.3f, 0, 0);
+            }
         }
         if (Input.GetButtonDown("Jump") && isGrounded) // if jump button and on ground
         {
             isGrounded = false;
             body.AddForce(new Vector2(0, jump), ForceMode2D.Impulse);
         }
-
     }
 
     private IEnumerator playerDeath()
@@ -181,6 +203,7 @@ public class Player : MonoBehaviour
         data.checkpointPosition = respawnPosition; // save the value of the activeCheckpoint
         data.time = System.DateTime.Now.ToString("HH:mm dd/MM/yy"); // save the current value of the time
         data.currentScene = SceneManager.GetActiveScene().name; // save the name of the current scene
+        data.upgrades = upgradeList; // save upgrade list
     }
 
     public void Load(PlayerSaveData data)
@@ -196,6 +219,7 @@ public class Player : MonoBehaviour
             transform.position = respawnPosition;
             findCheckpoint = true;
         }
+        upgradeList = data.upgrades;
     }
 
     #endregion
@@ -207,4 +231,5 @@ public struct PlayerSaveData
     public Vector3 checkpointPosition;
     public string time;
     public string currentScene;
+    public int[] upgrades;
 }
