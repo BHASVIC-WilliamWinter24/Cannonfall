@@ -83,4 +83,11 @@ public class SaveSystem : MonoBehaviour
         _saveData = JsonUtility.FromJson<SaveData>(saveContent);
         return _saveData.PlayerData.currentScene;
     }
+
+    public static void setFileScene(string name)
+    {
+        HandleSaveData(); // get the necessary data
+        _saveData.PlayerData.currentScene = name; // change the scene to the next one
+        File.WriteAllText(SaveFileName(), JsonUtility.ToJson(_saveData, true)); // save it again
+    }
 }

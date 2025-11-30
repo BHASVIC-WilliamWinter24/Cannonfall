@@ -5,7 +5,7 @@ public class Cannonball : MonoBehaviour
 {
     [SerializeField] private GameObject explosion;
     public bool upgradeActive = false;
-
+    
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Ground") || collision.CompareTag("Hazard") || collision.CompareTag("Enemy")) 

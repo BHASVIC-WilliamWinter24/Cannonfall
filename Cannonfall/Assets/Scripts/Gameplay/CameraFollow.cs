@@ -16,8 +16,7 @@ public class CameraFollow : MonoBehaviour
         tempPos = player.position;
         #region Camera Limits
         if (SceneManager.GetActiveScene().name == "Level 1")
-        {
-            
+        { 
             // at start
             if (tempPos.y > - 14 && tempPos.y < -7 && tempPos.x < 15)
                 tempPos.y = -7; // bottom limit 0
@@ -40,6 +39,20 @@ public class CameraFollow : MonoBehaviour
             //at bottom 
             if (tempPos.y < -35 && tempPos.x < -22 && tempPos.x > -106) 
                 tempPos.y = -35;
+        }
+        else if (SceneManager.GetActiveScene().name == "Level 2")
+        {
+            if (tempPos.y < 0.6f)
+                tempPos.y = 0.6f; // bottom limit
+            if (tempPos.x > 119)
+                tempPos.x = 119; // right limit
+            if (tempPos.y < 18 && tempPos.x < 0.8f && tempPos.x > -7f)
+                tempPos.x = 0.8f; // left limit at bottom (when not in tube)
+            if (tempPos.y >= 18 && tempPos.y < 25 && tempPos.x < 0.8f && tempPos.x > -4.5f && tempPos.x < (-53f*tempPos.y + 1010f)/70f)
+                tempPos.x = (-53f*tempPos.y + 1010f)/70f; // y = mx + c line to change to no limit rearranged to get x
+            if (tempPos.x < -13.5f)
+                tempPos.x = -13.5f; // absolute left limit 
+
         }
         #endregion
         /*

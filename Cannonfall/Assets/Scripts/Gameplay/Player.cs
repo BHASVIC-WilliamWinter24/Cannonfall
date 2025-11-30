@@ -5,12 +5,13 @@ using System.IO;
 
 public class Player : MonoBehaviour
 {
+    #region attributes
     [SerializeField] private float moveForce; // horizontal speed
     [SerializeField] private float jumpForce; // force of jump
     private bool isGrounded = true; // if touching ground
     public bool groundBelow; // if that ground is below
     private bool doubleJump; // if has double jumped
-    [SerializeField] private bool tripleJump = false; // if has triple jump
+    private bool tripleJump = false; // if has triple jump
     private bool isAlive = true; // if is alive
     private Rigidbody2D body; // reference for Rigidbody
     private string GROUND_TAG = "Ground"; // Ground tag
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour
     private float wallSliding = 0f; // x-coord when wallsliding
     [SerializeField] private int[] upgradeList = {0, 0, 0, 0, 0}; // holds all upgrades (0 = inactive, 1 = active)
     [SerializeField] private GameObject upgradeMenu; // holds reference to upgrade menu
+    #endregion
 
     void Awake()
     {
@@ -34,6 +36,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         upgradeList = new int[5]; // ensures that list has a length of 5
+        cannonballObject.GetComponent<Cannonball>().upgradeActive = false;
         if (!File.Exists(Application.persistentDataPath + "slot" + GameManager.instance.SaveSlot + ".save")) // if no save yet
         {
             SaveSystem.Save();
@@ -58,8 +61,17 @@ public class Player : MonoBehaviour
                 GetComponent<CapsuleCollider2D>().sharedMaterial = null;
             }
         }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            upgradeList[0] = 1;
+            upgradeList[1] = 1;
+            //upgradeList[2] = 1;
+            upgradeList[3] = 1; cannonballObject.GetComponent<Cannonball>().upgradeActive = true;
+            //upgradeList[4] = 1;
+        }
     }
 
+    #region collisions
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(HAZARD_TAG) && isAlive || collision.gameObject.CompareTag(ENEMY_TAG) && isAlive)
@@ -92,7 +104,7 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(playerDeath());
         }
-        if (collision.name == "Checkpoint" && findCheckpoint == true)
+        if (collision.CompareTag("Checkpoint") && findCheckpoint == true)
         {
             activeCheckpoint = collision.gameObject; // set touching checkpoint as the active one
             activeCheckpoint.GetComponent<Checkpoint>().activateCheckpoint();
@@ -108,6 +120,7 @@ public class Player : MonoBehaviour
                 cannonballObject.GetComponent<Cannonball>().upgradeActive = true; // set explosive cannonballs
         }
     }
+    #endregion
 
     private void Move() // horizontal movement
     {
@@ -188,7 +201,10 @@ public class Player : MonoBehaviour
     public void setActiveCheckpoint(GameObject checkpoint)
     {
         activeCheckpoint = checkpoint; // get object 
-        respawnPosition = checkpoint.GetComponent<Checkpoint>().getPosition(); // get respawn position
+        if (checkpoint != null)
+            respawnPosition = checkpoint.GetComponent<Checkpoint>().getPosition(); // get respawn position
+        else
+            respawnPosition = new Vector3(0, 0, 0);
     }
 
     public Vector3 getRespawnPosition()

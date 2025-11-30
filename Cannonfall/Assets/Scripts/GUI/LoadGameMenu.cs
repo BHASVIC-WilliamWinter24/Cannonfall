@@ -55,7 +55,8 @@ public class LoadGameMenu : MonoBehaviour
                 string time = SaveSystem.readFileTime(n);
                 if (time == null)
                     time = "N/A";
-                GameObject.Find("Save Slot " + n).GetComponent<TextMeshProUGUI>().text = "SLOT " + n + " - "; // add level
+                string scene = SaveSystem.readFileScene(n);
+                GameObject.Find("Save Slot " + n).GetComponent<TextMeshProUGUI>().text = "SLOT " + n + " - " + scene; 
                 GameObject.Find("Save Details " + n).GetComponent<TextMeshProUGUI>().text = "Saved: " + time;
             }  
         }

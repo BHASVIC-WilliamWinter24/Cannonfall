@@ -67,7 +67,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0038808584, y: -0.5124692}
+  m_Offset: {x: 0.002715338, y: -0.5124692}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -77,7 +77,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8990936, y: 0.02878794}
+  m_Size: {x: 0.19282892, y: 0.02878797}
   m_EdgeRadius: 0
 --- !u!114 &2278745421117040258
 MonoBehaviour:
@@ -121,7 +121,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -2, z: 0}
-  m_LocalScale: {x: 0.39176676, y: 0.994884, z: 1}
+  m_LocalScale: {x: 0.34761465, y: 0.9318084, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1387051509139962408}
@@ -261,8 +261,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72d5ffe0ea92214fb357462a25ce71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForce: 9
-  jumpForce: 10
+  moveForce: 5
+  jumpForce: 8
   groundBelow: 0
+  tripleJump: 0
   cannonballObject: {fileID: 1193810718684460970, guid: 5f0b4c5e2e754ef44ad11f810074c308, type: 3}
   blackScreen: {fileID: 0}
+  upgradeList: 0000000000000000000000000000000000000000
+  upgradeMenu: {fileID: 0}

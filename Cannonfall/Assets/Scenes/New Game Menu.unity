@@ -779,6 +779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FadeText
   objectToFade: {fileID: 780174063}
   fadeSpeed: 3
+  fadeIn: 0
 --- !u!1 &831465378
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,6 +870,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FadeToBlack
   objectToFade: {fileID: 831465378}
   fadeSpeed: 3
+  fadeIn: 0
 --- !u!1 &852516142
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,7 +1172,6 @@ GameObject:
   - component: {fileID: 1016434454}
   - component: {fileID: 1016434455}
   - component: {fileID: 1016434456}
-  - component: {fileID: 1016434457}
   m_Layer: 5
   m_Name: Overwrite Popup
   m_TagString: Untagged
@@ -1226,20 +1227,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1016434453}
   m_CullTransparentMesh: 1
---- !u!114 &1016434457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1016434453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4a872f6a75884840b79382bf36ec9a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FadeUI
-  objectToFade: {fileID: 1016434453}
-  fadeSpeed: 3
 --- !u!1 &1091340210
 GameObject:
   m_ObjectHideFlags: 0
@@ -2285,6 +2272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FadeUI
   objectToFade: {fileID: 1617053913}
   fadeSpeed: 3
+  fadeIn: 0
 --- !u!1 &2016673331
 GameObject:
   m_ObjectHideFlags: 0
@@ -2573,6 +2561,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FadeText
   objectToFade: {fileID: 2042961704}
   fadeSpeed: 3
+  fadeIn: 0
 --- !u!1 &2074005807
 GameObject:
   m_ObjectHideFlags: 0
@@ -2724,6 +2713,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FadeText
   objectToFade: {fileID: 2074005807}
   fadeSpeed: 3
+  fadeIn: 0
 --- !u!1 &2074887536
 GameObject:
   m_ObjectHideFlags: 0

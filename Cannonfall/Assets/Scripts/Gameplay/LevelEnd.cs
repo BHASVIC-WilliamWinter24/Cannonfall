@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
 
 public class LevelEnd : MonoBehaviour
@@ -23,12 +22,19 @@ public class LevelEnd : MonoBehaviour
                 StartCoroutine(popup(true)); // start showing the popup
                 if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.F)) // if press E or F
                 {
+                    Player player = GameObject.FindWithTag("Player").GetComponent<Player>();
+                    player.setActiveCheckpoint(null);
                     if (SceneManager.GetActiveScene().name == "Level 1")
-                        //SceneManager.LoadScene("Level 2");
-                        Debug.Log("Level 2");
-                    if (SceneManager.GetActiveScene().name == "Level 2")
+                    {
+                        SaveSystem.setFileScene("Level 2");
+                        SceneManager.LoadScene("Level 2");
+                    }
+                    else if (SceneManager.GetActiveScene().name == "Level 2")
+                    {
+                        SaveSystem.setFileScene("Level 3");
                         SceneManager.LoadScene("Level 3");
-                    if (SceneManager.GetActiveScene().name == "Level 3")
+                    }
+                    else if (SceneManager.GetActiveScene().name == "Level 3")
                         Debug.Log("GAME END");
                 }
             }

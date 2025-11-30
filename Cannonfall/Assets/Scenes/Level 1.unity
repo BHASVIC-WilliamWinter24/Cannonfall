@@ -9594,11 +9594,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1611014730}
-  - {fileID: 1615772448}
   - {fileID: 1089101213}
   - {fileID: 5573557426123687872}
   - {fileID: 7695855946206140671}
   - {fileID: 1504732899}
+  - {fileID: 1615772448}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -10747,14 +10747,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1862722914684429009, guid: 76502ec69e25fc841a8c3166934075f6, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.86706954
-      objectReference: {fileID: 0}
-    - target: {fileID: 1862722914684429009, guid: 76502ec69e25fc841a8c3166934075f6, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.9176286
-      objectReference: {fileID: 0}
-    - target: {fileID: 1862722914684429009, guid: 76502ec69e25fc841a8c3166934075f6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -194.2
       objectReference: {fileID: 0}
@@ -11750,14 +11742,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1332110157557559178, guid: 4372dbbf4aab1f041b5020360d203c1a, type: 3}
-      propertyPath: jumpForce
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332110157557559178, guid: 4372dbbf4aab1f041b5020360d203c1a, type: 3}
-      propertyPath: moveForce
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332110157557559178, guid: 4372dbbf4aab1f041b5020360d203c1a, type: 3}
       propertyPath: blackScreen
       value: 
       objectReference: {fileID: 1615772449}
@@ -11768,26 +11752,6 @@ PrefabInstance:
     - target: {fileID: 8532727283160608847, guid: 4372dbbf4aab1f041b5020360d203c1a, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589643427343431533, guid: 4372dbbf4aab1f041b5020360d203c1a, type: 3}
-      propertyPath: m_Size.x
-      value: 0.19282892
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589643427343431533, guid: 4372dbbf4aab1f041b5020360d203c1a, type: 3}
-      propertyPath: m_Size.y
-      value: 0.02878797
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589643427343431533, guid: 4372dbbf4aab1f041b5020360d203c1a, type: 3}
-      propertyPath: m_Offset.x
-      value: 0.002715338
-      objectReference: {fileID: 0}
-    - target: {fileID: 9222735574909283478, guid: 4372dbbf4aab1f041b5020360d203c1a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.34761465
-      objectReference: {fileID: 0}
-    - target: {fileID: 9222735574909283478, guid: 4372dbbf4aab1f041b5020360d203c1a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.9318084
       objectReference: {fileID: 0}
     - target: {fileID: 9222735574909283478, guid: 4372dbbf4aab1f041b5020360d203c1a, type: 3}
       propertyPath: m_LocalPosition.x

@@ -42,7 +42,7 @@ public class SaveOverwrite : MonoBehaviour
                 {
                     File.Delete(fileName); // delete previous file
                 }
-                SceneManager.LoadScene("Gameplay");
+                SceneManager.LoadScene("Level 1");
             }
             else if (selectedButton == 1 && selectBuffer <= 0) // cancel
             {

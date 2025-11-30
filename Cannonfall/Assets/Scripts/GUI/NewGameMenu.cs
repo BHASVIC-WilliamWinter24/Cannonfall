@@ -44,7 +44,8 @@ public class NewGameMenu : MonoBehaviour
                 string time = SaveSystem.readFileTime(n);
                 if (time == null)
                     time = "N/A";
-                GameObject.Find("Save Slot " + n).GetComponent<TextMeshProUGUI>().text = "SLOT " + n + " - "; // add level
+                string scene = SaveSystem.readFileScene(n);
+                GameObject.Find("Save Slot " + n).GetComponent<TextMeshProUGUI>().text = "SLOT " + n + " - " + scene;
                 GameObject.Find("Save Details " + n).GetComponent<TextMeshProUGUI>().text = "Saved: " + time;
             }
             
@@ -83,7 +84,7 @@ public class NewGameMenu : MonoBehaviour
                 else
                 {
                     GameManager.instance.SaveSlot = 1;
-                    SceneManager.LoadScene("Gameplay");
+                    SceneManager.LoadScene("Level 1");
                 }
             }
             else if (selectedButton == 1) // slot 2
@@ -96,7 +97,7 @@ public class NewGameMenu : MonoBehaviour
                 else
                 {
                     GameManager.instance.SaveSlot = 2;
-                    SceneManager.LoadScene("Gameplay");
+                    SceneManager.LoadScene("Level 1");
                 }
             }
             else if (selectedButton == 2) // slot 3
@@ -109,7 +110,7 @@ public class NewGameMenu : MonoBehaviour
                 else
                 {
                     GameManager.instance.SaveSlot = 3;
-                    SceneManager.LoadScene("Gameplay");
+                    SceneManager.LoadScene("Level 1");
                 }
             }
             else if (selectedButton == 3) // slot 4
@@ -122,7 +123,7 @@ public class NewGameMenu : MonoBehaviour
                 else
                 {
                     GameManager.instance.SaveSlot = 4;
-                    SceneManager.LoadScene("Gameplay");
+                    SceneManager.LoadScene("Level 1");
                 }
             }
             else if (selectedButton == 4) // back
