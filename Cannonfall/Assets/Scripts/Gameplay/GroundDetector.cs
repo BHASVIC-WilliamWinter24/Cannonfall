@@ -12,7 +12,7 @@ public class GroundDetector : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collision) // when landing on ground
+    void OnTriggerStay2D(Collider2D collision) // when landing on ground
     {
         if (collision.CompareTag("Ground"))
         {

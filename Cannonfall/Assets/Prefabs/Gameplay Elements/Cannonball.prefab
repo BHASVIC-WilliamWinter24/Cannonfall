@@ -169,3 +169,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosion: {fileID: 8928961438439354379, guid: ab37d281c642ea642b8b61406a37622b, type: 3}
+  upgradeActive: 0

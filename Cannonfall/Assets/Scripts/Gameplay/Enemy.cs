@@ -25,6 +25,23 @@ public class Enemy : MonoBehaviour
     private void FixedUpdate()
     {
         float distance = Vector3.Distance(player.transform.position, transform.position);
+        if (!(transform.position.x - moveCapLeft < 0.5 ) && !(moveCapRight - transform.position.x < 0.5))
+        {
+            if (body.linearVelocityX < 0 && transform.localScale.x > 0) // if moving left and not flipped 
+            {
+                transform.localScale *= new Vector2(-1, 1); // flip on y
+                // flip the ledge detectors so that they cap the correct way
+                gameObject.transform.GetChild(2).transform.localScale *= new Vector2(-1, 1);
+                gameObject.transform.GetChild(3).transform.localScale *= new Vector2(-1, 1);
+            }
+            else if (body.linearVelocityX > 0 && transform.localScale.x < 0) // if moving right and flipped
+            {
+                transform.localScale *= new Vector2(-1, 1); // flip on y
+                // flip the ledge detectors so that they cap the correct way
+                gameObject.transform.GetChild(2).transform.localScale *= new Vector2(-1, 1);
+                gameObject.transform.GetChild(3).transform.localScale *= new Vector2(-1, 1);
+            }
+        }
         if (distance < chaseDistance)
         {
             if (transform.position.x < moveCapLeft) // if beyond cap
@@ -112,6 +129,6 @@ public class Enemy : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Hazard"))
-            Destroy(this);
+            Destroy(gameObject);
     }
 }

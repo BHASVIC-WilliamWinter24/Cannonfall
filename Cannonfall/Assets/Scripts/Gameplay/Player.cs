@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.IO;
+using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
@@ -61,6 +62,7 @@ public class Player : MonoBehaviour
                 GetComponent<CapsuleCollider2D>().sharedMaterial = null;
             }
         }
+        /* for testing
         if (Input.GetKeyDown(KeyCode.K))
         {
             upgradeList[0] = 1;
@@ -69,6 +71,7 @@ public class Player : MonoBehaviour
             upgradeList[3] = 1; cannonballObject.GetComponent<Cannonball>().upgradeActive = true;
             //upgradeList[4] = 1;
         }
+        */
     }
 
     #region collisions
@@ -125,6 +128,10 @@ public class Player : MonoBehaviour
     private void Move() // horizontal movement
     {
         float movementX = Input.GetAxis("Horizontal");
+        if (movementX < 0 && transform.localScale.x > 0) // if moving left and not flipped 
+            transform.localScale *= new Vector2(-1, 1); // flip on y
+        else if (movementX > 0 && transform.localScale.x < 0) // if moving right and flipped
+            transform.localScale *= new Vector2(-1, 1); // flip on y
         float move = moveForce + (upgradeList[0] * 0.1f * moveForce); // change moveForce depending on upgrade
         body.linearVelocity = new Vector2(movementX * move, body.linearVelocityY);
         // forcibly slide down walls

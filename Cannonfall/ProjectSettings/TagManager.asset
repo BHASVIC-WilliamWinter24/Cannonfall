@@ -45,6 +45,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2710937703
+    locked: 0
   - name: Hazard
     uniqueID: 465892317
     locked: 0
