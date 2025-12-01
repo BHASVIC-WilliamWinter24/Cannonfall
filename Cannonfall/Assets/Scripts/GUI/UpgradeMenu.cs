@@ -7,8 +7,8 @@ public class UpgradeMenu : MonoBehaviour
     [SerializeField] private GameObject upgradeName;
     [SerializeField] private GameObject upgradeDetails;
     private int upgrade;
-    private string[] upgradeTextNames = {"SPEED BOOST", "MORE RECOIL", "EXTRA JUMP", "EXPLOSIVE SHOT", "DOUBLE BARREL"};
-    private string[] upgradeTextDetails = {"+10% speed", "+5% jump strength", "+1 extra jump", "cannonball explodes on impact", "+1 cannonball per jump"};
+    private string[] upgradeTextNames = {"SPEED BOOST", "MORE RECOIL", "EXTRA JUMP", "EXPLOSIVE SHOT", "DOUBLE BARREL", "SCATTERSHOT"};
+    private string[] upgradeTextDetails = {"+10% speed", "+5% jump strength", "+1 extra jump", "cannonball explodes on impact", "+1 cannonball per jump", "press Q to DASH"};
     private int buffer;
     private bool active = false; 
 

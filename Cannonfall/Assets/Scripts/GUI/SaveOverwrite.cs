@@ -37,7 +37,7 @@ public class SaveOverwrite : MonoBehaviour
             {
                 GameManager.instance.SaveSlot = saveSlot;
                 string fileName = Application.persistentDataPath + "slot" + saveSlot + ".save";
-                Debug.Log(fileName);
+                //Debug.Log(fileName);
                 if (File.Exists(fileName))
                 {
                     File.Delete(fileName); // delete previous file

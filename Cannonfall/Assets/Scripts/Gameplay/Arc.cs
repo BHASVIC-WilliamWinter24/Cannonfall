@@ -15,6 +15,7 @@ public class Arc : MonoBehaviour
         animator = GetComponent<Animator>();
 
     }
+    
     void Start()
     {
         StartCoroutine(zapCycle());

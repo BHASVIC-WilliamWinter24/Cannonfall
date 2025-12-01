@@ -27,12 +27,14 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        /* testing
         if (Input.GetKeyDown(KeyCode.Alpha2))
             SceneManager.LoadScene("Level 2");
         if (Input.GetKeyDown(KeyCode.Alpha3))
             SceneManager.LoadScene("Level 3");
         if (Input.GetKeyDown(KeyCode.O))
             File.Delete(Application.persistentDataPath + "slot" + saveSlot + ".save");
+        */
         if (player == null && GameObject.FindWithTag("Player") != null)
             player = GameObject.FindWithTag("Player");
     }

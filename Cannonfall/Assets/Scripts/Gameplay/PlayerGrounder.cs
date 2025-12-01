@@ -17,7 +17,8 @@ public class PlayerGrounder : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D collision)    {
+    void OnTriggerExit2D(Collider2D collision)    
+    {
         if (collision.gameObject.CompareTag("Ground"))
         {
             player.GetComponent<Player>().groundBelow = false;

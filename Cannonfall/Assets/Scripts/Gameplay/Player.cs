@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System.IO;
 using Unity.VisualScripting;
+using Unity.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -24,8 +25,13 @@ public class Player : MonoBehaviour
     private GameObject activeCheckpoint; // holds active checkpoint reference
     private bool findCheckpoint = false; // if needs to get checkpoint after saving
     private float wallSliding = 0f; // x-coord when wallsliding
-    [SerializeField] private int[] upgradeList = {0, 0, 0, 0, 0}; // holds all upgrades (0 = inactive, 1 = active)
+    [SerializeField] private int[] upgradeList = {0, 0, 0, 0, 0, 0}; // holds all upgrades (0 = inactive, 1 = active)
     [SerializeField] private GameObject upgradeMenu; // holds reference to upgrade menu
+    private bool direction = true; // true = left, false = right
+    private int reloadTimer; 
+    [SerializeField] private int dashForce;
+    [SerializeField] private bool dashing; // true while dashing
+    [SerializeField] private GameObject scattershot;
     #endregion
 
     void Awake()
@@ -36,7 +42,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        upgradeList = new int[5]; // ensures that list has a length of 5
+        upgradeList = new int[6]; // ensures that list has a length of 5
         cannonballObject.GetComponent<Cannonball>().upgradeActive = false;
         if (!File.Exists(Application.persistentDataPath + "slot" + GameManager.instance.SaveSlot + ".save")) // if no save yet
         {
@@ -61,6 +67,16 @@ public class Player : MonoBehaviour
                 wallSliding = 0;
                 GetComponent<CapsuleCollider2D>().sharedMaterial = null;
             }
+            if (Input.GetKeyDown(KeyCode.Q) && reloadTimer <= 0 && isGrounded && upgradeList[5] == 1)
+            {
+                if (direction && dashForce > 0) // if moving left and applying right
+                    dashForce *= -1; // flip force
+                else if (!direction && dashForce < 0) // if moving right and applying left
+                    dashForce *= -1; // flip force
+                StartCoroutine(Dash()); // dash
+            }
+            if (reloadTimer > 0) 
+                reloadTimer -= 1;
         }
         /* for testing
         if (Input.GetKeyDown(KeyCode.K))
@@ -72,6 +88,12 @@ public class Player : MonoBehaviour
             //upgradeList[4] = 1;
         }
         */
+    }
+
+    void FixedUpdate()
+    {
+        if (dashing)
+            body.linearVelocity = new(dashForce, 0);
     }
 
     #region collisions
@@ -128,10 +150,17 @@ public class Player : MonoBehaviour
     private void Move() // horizontal movement
     {
         float movementX = Input.GetAxis("Horizontal");
+        // flip
         if (movementX < 0 && transform.localScale.x > 0) // if moving left and not flipped 
             transform.localScale *= new Vector2(-1, 1); // flip on y
         else if (movementX > 0 && transform.localScale.x < 0) // if moving right and flipped
             transform.localScale *= new Vector2(-1, 1); // flip on y
+        // direction
+        if (movementX < 0) // if moving left
+            direction = true;
+        else if (movementX > 0) // if moving right
+            direction = false;
+        // move
         float move = moveForce + (upgradeList[0] * 0.1f * moveForce); // change moveForce depending on upgrade
         body.linearVelocity = new Vector2(movementX * move, body.linearVelocityY);
         // forcibly slide down walls
@@ -188,6 +217,18 @@ public class Player : MonoBehaviour
             isGrounded = false;
             body.AddForce(new Vector2(0, jump), ForceMode2D.Impulse);
         }
+    }
+
+
+    private IEnumerator Dash()
+    {
+        reloadTimer = 60;
+        dashing = true;
+        scattershot.GetComponent<Shot>().direction = direction;
+        GameObject shot = Instantiate(scattershot);
+        shot.transform.position = transform.position;
+        yield return new WaitForSeconds(0.25f);
+        dashing = false;
     }
 
     private IEnumerator playerDeath()

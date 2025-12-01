@@ -41,7 +41,7 @@ public class SaveSystem : MonoBehaviour
 
     public static void Save()
     {
-        Debug.Log(SaveFileName());
+        //Debug.Log(SaveFileName());
         HandleSaveData();
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(_saveData, true)); // true makes it human-readable
     }
@@ -60,7 +60,7 @@ public class SaveSystem : MonoBehaviour
 
     private static void HandleLoadData()
     {
-        Debug.Log(SaveFileName());
+        //Debug.Log(SaveFileName());
         if (SceneManager.GetActiveScene().name != _saveData.PlayerData.currentScene && _saveData.PlayerData.currentScene != null)
         {
             SceneManager.LoadScene(_saveData.PlayerData.currentScene);
