@@ -38,5 +38,4 @@ public class GameManager : MonoBehaviour
         if (player == null && GameObject.FindWithTag("Player") != null)
             player = GameObject.FindWithTag("Player");
     }
-
 }

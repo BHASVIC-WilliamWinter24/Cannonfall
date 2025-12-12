@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class Checkpoint : MonoBehaviour
 {
@@ -61,7 +60,7 @@ public class Checkpoint : MonoBehaviour
         {
             while (interactPopUp.transform.position.x < 960f)
             {
-                interactPopUp.transform.position += new Vector3(5f, 0f, 0f);
+                interactPopUp.transform.position += new Vector3(5f, 0f, 0f); 
                 if (interactPopUp.transform.position.x > 960f)
                 {
                     interactPopUp.transform.position = new Vector3(960f, interactPopUp.transform.position.y, 0f);

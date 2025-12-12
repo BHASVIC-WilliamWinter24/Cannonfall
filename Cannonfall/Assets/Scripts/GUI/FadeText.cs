@@ -29,5 +29,4 @@ public class FadeText : MonoBehaviour
             objectColor.a = Mathf.MoveTowards(objectColor.a, desiredFade, fadeSpeed * Time.deltaTime); // fade
         objectToFade.GetComponent<TextMeshProUGUI>().color = objectColor; // change
     }
-
 }

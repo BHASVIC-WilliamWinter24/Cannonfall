@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 
 public class Cannonball : MonoBehaviour
@@ -17,7 +16,7 @@ public class Cannonball : MonoBehaviour
             }
             Destroy(gameObject);
         }
-        if (collision.CompareTag("Enemy"))
-            collision.GetComponent<Enemy>().EnemyDeath();
+        if (collision.CompareTag("Enemy")) // if hits enemy
+            collision.GetComponent<Enemy>().EnemyDeath(); // kill enemy
     }
 }
